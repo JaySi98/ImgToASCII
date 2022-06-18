@@ -9,10 +9,12 @@ project(Template VERSION 1.0)
 
 set(SOURCES
     Src/Main.cpp
+    Src/CommandParser.cpp
 )
 
 set(HEADERS
     Include/Config.h.in
+    Include/CommandParser.h
 )
 
 # wskazanie maina
@@ -60,7 +62,6 @@ endif()
 # Target 
 ############################################################
 # dodanie podfolderów do projektu
-add_subdirectory(Lib)
 add_subdirectory(Tests)
 
 # wskazanie folderów "include"(plików nagłówkowych bibliotek)
