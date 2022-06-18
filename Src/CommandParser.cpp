@@ -2,7 +2,7 @@
 
 CommandParseResult CommandParser::result(RESULT_NO_URL); 
 const std::string CommandParser::ImgURLRegex("(https?:\\/\\/.*\\.(?:png|jpg))/i");
-std::string CommandParser::ImgUrl("");
+char* CommandParser::ImgUrl(nullptr);
 
 CommandParseResult CommandParser::ParseCommands(int argc, char* argv[])
 {
@@ -26,7 +26,7 @@ CommandParseResult CommandParser::ParseCommands(int argc, char* argv[])
     return result;
 }
 
-std::string CommandParser::GetUrl(void)
+char* CommandParser::GetUrl(void)
 {
     if(result == RESULT_OK)
         return ImgUrl;

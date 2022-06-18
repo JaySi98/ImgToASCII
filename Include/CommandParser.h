@@ -12,10 +12,10 @@ class CommandParser
 {
 public:
     static CommandParseResult ParseCommands(int argc, char* argv[]);
-    static std::string GetUrl(void);
+    static char* GetUrl(void);
 
 private:
     static CommandParseResult result;
     static const std::string ImgURLRegex;
-    static std::string ImgUrl;
+    static char* ImgUrl;
 };

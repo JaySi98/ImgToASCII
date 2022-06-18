@@ -1,2 +1,4 @@
 /Build
 .vscode/
+*.jpg
+*.png
