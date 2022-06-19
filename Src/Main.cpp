@@ -1,13 +1,11 @@
 #include <iostream>
 #include <Include/Config.h>
-
-#include <opencv2/opencv.hpp>
-#include <opencv2/imgproc.hpp>
-#include <opencv2/highgui.hpp>
 #include <curl/curl.h>
 #include <curl/easy.h>
-
 #include <CommandParser.h>
+#include <ImageToASCII.h>
+
+#define DEFAULT_IMAGE_NAME "image.jpg"
 
 void PrintCommandParseError(CommandParseResult result);
 bool DownloadImage(char* url);
@@ -17,18 +15,23 @@ int main(int argc, char* argv[])
 {   
    CommandParseResult result = CommandParser::ParseCommands(argc, argv);
    if(result == RESULT_OK)
-   {
-      std::cout << "jest git" << std::endl;
-      
-      // https://jbzd.com.pl/obr/2473433/co-racja-to-racja.png
-      // pobieranie obrazka przy pomocy biblioteki curl
-      // przetworzenie obrazka na tekst ASCII przy pomocy biblioteki OpenCV
+   {      
       if (!DownloadImage(CommandParser::GetUrl()))
       {
          printf("!! Failed to download file: %s\n", argv[1]);
          return -1;
       }
 
+      ImageToASCII ita(DEFAULT_IMAGE_NAME);      
+      try
+      {
+         ita.ConvertToText();
+      }
+      catch(const std::exception& e)
+      {
+         std::cerr << e.what() << '\n';
+      }
+       
    }
    else
    {
@@ -53,7 +56,7 @@ size_t SaveFile(void *ptr, size_t size, size_t nmemb, void* userdata)
 
 bool DownloadImage(char* url)
 {
-   FILE* fp = fopen("out.jpg", "wb");
+   FILE* fp = fopen(DEFAULT_IMAGE_NAME, "wb");
    if (!fp)
    {
       printf("!!! Failed to create file on the disk\n");

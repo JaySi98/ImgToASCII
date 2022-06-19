@@ -10,11 +10,13 @@ project(Template VERSION 1.0)
 set(SOURCES
     Src/Main.cpp
     Src/CommandParser.cpp
+    Src/ImageToASCII.cpp
 )
 
 set(HEADERS
     Include/Config.h.in
     Include/CommandParser.h
+    Include/ImageToASCII.h
 )
 
 # wskazanie maina
