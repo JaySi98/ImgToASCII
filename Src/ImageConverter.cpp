@@ -1,10 +1,10 @@
-#include <ImageToASCII.h>
+#include <ImageConverter.h>
 
-ImageToASCII::ImageToASCII(std::string imagePath) 
+ImageConverter::ImageConverter(std::string imagePath) 
 : imagePath(imagePath)
 { }
 
-bool ImageToASCII::ConvertToText(void)
+bool ImageConverter::ConvertToText(void)
 {
     cv::Mat image = cv::imread(imagePath, cv::IMREAD_GRAYSCALE);
     

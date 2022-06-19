@@ -11,3 +11,10 @@ Ustawienie zmiennej w cmake:
 Komendy:
     chmod +x Scripts/configure.sh  Scripts/build.sh  Scripts/run.sh
     ./Scripts/configure.sh
+
+
+DO POPRAWY:
+    - ogólne przetwarzanie komend
+    - pobieranie obrazków również z scieżki
+    - dodać opcje konwersji
+    

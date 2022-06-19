@@ -10,13 +10,15 @@ project(Template VERSION 1.0)
 set(SOURCES
     Src/Main.cpp
     Src/CommandParser.cpp
-    Src/ImageToASCII.cpp
+    Src/ImageConverter.cpp
+    Src/ImageDownloader.cpp
 )
 
 set(HEADERS
     Include/Config.h.in
     Include/CommandParser.h
-    Include/ImageToASCII.h
+    Include/ImageConverter.h
+    Include/ImageDownloader.h
 )
 
 # wskazanie maina

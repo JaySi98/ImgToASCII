@@ -5,10 +5,10 @@
 #include <opencv2/imgproc.hpp>
 #include <opencv2/highgui.hpp>
 
-class ImageToASCII
+class ImageConverter
 {
 public:
-    ImageToASCII(std::string imagePath);
+    ImageConverter(std::string imagePath);
     bool ConvertToText(void);
 
 private:
