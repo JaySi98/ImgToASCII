@@ -13,6 +13,7 @@ class CommandParser
 public:
     static CommandParseResult ParseCommands(int argc, char* argv[]);
     static char* GetUrl(void);
+    static char* GetSavePath(void);
 
 private:
     static CommandParseResult result;

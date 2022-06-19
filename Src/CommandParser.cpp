@@ -33,3 +33,7 @@ char* CommandParser::GetUrl(void)
     else
         throw "No valid URL specified";
 }
+char* CommandParser::GetSavePath(void)
+{
+    return "image.jpg";
+}

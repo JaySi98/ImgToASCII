@@ -7,7 +7,7 @@
 
 void PrintCommandParseError(CommandParseResult result);
 bool DownloadImage(void);
-bool ConvertImage(void);
+bool ConvertImage(std::string imagePath);
 
 int main(int argc, char* argv[])
 {   
@@ -20,7 +20,7 @@ int main(int argc, char* argv[])
          return EXIT_FAILURE;         
       }
 
-      if(!ConvertImage())
+      if(!ConvertImage(CommandParser::GetSavePath()))
       {
          std::cout << "Failed to convert image: " << std::endl;
          return EXIT_FAILURE;
@@ -51,9 +51,10 @@ bool DownloadImage(void)
 {
    bool status = false;
    char* url = CommandParser::GetUrl();
+   char* path = CommandParser::GetSavePath();
    ImageDownloader downloader;
 
-   if(downloader.DownloadImage(url, ""))
+   if(downloader.DownloadImage(url, path))
    {
       status = true;
    }
@@ -61,10 +62,10 @@ bool DownloadImage(void)
    return status;
 }
 
-bool ConvertImage()
+bool ConvertImage(std::string imagePath)
 {
    bool status = false;
-   ImageConverter converter("");      
+   ImageConverter converter(imagePath);      
    
    try
    {
