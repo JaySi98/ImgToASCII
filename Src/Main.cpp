@@ -4,54 +4,44 @@
 #include <ImageConverter.h>
 #include <ImageDownloader.h>
 
-
-void PrintCommandParseError(CommandParseResult result);
-bool DownloadImage(void);
+bool DownloadImage(char* url, char* path);
 bool ConvertImage(std::string imagePath);
 
 int main(int argc, char* argv[])
 {   
-   CommandParseResult result = CommandParser::ParseCommands(argc, argv);
-   if(result == RESULT_OK)
+   char* imageName = "image";
+   CommandParser commandParser;
+   ParseResult result = commandParser.ParseCommands(argc, argv);
+
+   if(result == RESULT_OK_URL)
    {  
-      if(!DownloadImage())
+      if(!DownloadImage(commandParser.GetUrl(), strcat(imageName,commandParser.GetFormat())))
       {
-         std::cout << "Failed to download file: " <<  CommandParser::GetUrl() << std::endl;
+         std::cout << "Failed to download file: " <<  commandParser.GetUrl() << std::endl;
          return EXIT_FAILURE;         
       }
 
-      if(!ConvertImage(CommandParser::GetSavePath()))
+      if(!ConvertImage(strcat(imageName,commandParser.GetFormat())))
       {
          std::cout << "Failed to convert image: " << std::endl;
          return EXIT_FAILURE;
       }   
    }
+   else if(RESULT_OK_PATH)
+   {
+      // TODO
+   }
    else
    {
-      PrintCommandParseError(result);
+      std::cout << "Url or image path must be specified. Example: -u/-s <url>/<path>" << std::endl;
    }
 
    return EXIT_SUCCESS;
 }
 
-void PrintCommandParseError(CommandParseResult result)
-{
-   std::string msg = "";
-   switch (result)
-   {
-      case RESULT_BAD_URL: msg = "Bad url"; break;
-      case RESULT_NO_URL:  msg = "Url must be specified. Example: -s <url>"; break;
-      default: break;
-   }
-
-   std::cout << msg << std::endl;
-}
-
-bool DownloadImage(void)
+bool DownloadImage(char* url, char* path)
 {
    bool status = false;
-   char* url = CommandParser::GetUrl();
-   char* path = CommandParser::GetSavePath();
    ImageDownloader downloader;
 
    if(downloader.DownloadImage(url, path))

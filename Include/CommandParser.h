@@ -1,22 +1,32 @@
 #include <string>
-#include <boost/regex.hpp>
 #include <iostream>
-enum CommandParseResult
+#include <boost/regex.hpp>
+#include <boost/filesystem.hpp>
+
+
+enum ParseResult
 {
-    RESULT_OK = 0,    
-    RESULT_NO_URL,
-    RESULT_BAD_URL,
+    RESULT_OK_URL = 0,        
+    RESULT_OK_PATH,
+    RESULT_BAD_COMMAND,
 };
 
 class CommandParser
 {
 public:
-    static CommandParseResult ParseCommands(int argc, char* argv[]);
-    static char* GetUrl(void);
-    static char* GetSavePath(void);
+    CommandParser(void);
+    ParseResult ParseCommands(int argc, char* argv[]);
+    char* GetUrl(void);
+    char* GetFormat(void);
+    char* GetImagePath(void);
 
 private:
-    static CommandParseResult result;
-    static const std::string ImgURLRegex;
-    static char* ImgUrl;
+    ParseResult result;
+    const std::string ImgURLRegex;
+    const std::string ImgPathRegex;
+    char* ImgUrl;
+    char* ImgPath;
+
+    bool checkForURL(int argc, char* argv[]);
+    bool checkForPath(int argc, char* argv[]);
 };

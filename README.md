@@ -14,7 +14,6 @@ Komendy:
 
 
 DO POPRAWY:
-    - ogólne przetwarzanie komend
     - pobieranie obrazków również z scieżki
     - dodać opcje konwersji
     
