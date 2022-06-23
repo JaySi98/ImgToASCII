@@ -2,61 +2,65 @@
 
 
 CommandParser::CommandParser() :
-    result(RESULT_BAD_COMMAND), 
+    result(RESULT_ERROR), 
     ImgURLRegex("(https?:\\/\\/.*\\.(?:png|jpg))/i"), 
-    ImgPathRegex(""),
+    ImgPathRegex("/.*\\.(jpg|png)$/igm"),
     ImgUrl(nullptr),
     ImgPath(nullptr)
 { }
 
-ParseResult CommandParser::ParseCommands(int argc, char* argv[])
+void CommandParser::ParseCommands(int argc, char* argv[])
 {
-    result = RESULT_BAD_COMMAND;
+    po::options_description desc("Allowed options");
+    desc.add_options()
+        ("-h", "Shows program options")
+        ("-u", po::value<std::string>()->default_value(""), "image url")
+        ("-p", po::value<std::string>()->default_value(""), "image path");
+    
+    po::variables_map vm;
+    po::store(po::parse_command_line(argc,argv,desc),vm);
+    po::notify(vm);
 
-    if(checkForURL(argc, argv))
+    if(vm.count("-u"))
     {
+        std::string option = vm["-u"].as<std::string>(); 
+        checkURL(option);
+    }
+    else if(vm.count("-p"))
+    {
+        std::string option = vm["-p"].as<std::string>();
+        checkPath(option);
+    }
+}
+
+void CommandParser::checkURL(std::string line)
+{
+    if(regex_match(line, regex(ImgURLRegex), match_partial))
+    {
+        ImgUrl = const_cast<char*>(line.c_str());
         result = RESULT_OK_URL;
     }
-    else if(checkForPath(argc, argv))
+}
+
+void CommandParser::checkPath(std::string line)
+{
+    if(regex_match(line, regex(ImgPathRegex), match_partial))
     {
+        ImgPath = const_cast<char*>(line.c_str());   
         result = RESULT_OK_PATH;
     }
-    else
-    {
-        result = RESULT_BAD_COMMAND;
-    }
-
-    return result;
 }
 
-bool CommandParser::checkForURL(int argc, char* argv[])
+char* CommandParser::GetFormat(void)
 {
-    bool status = false;
-    if(argc >= 3)
-    {
-        if(strcmp(argv[1], "-u") == 0 && boost::regex_match(argv[2], boost::regex(ImgURLRegex), boost::match_partial))
-        {
-            ImgUrl = argv[2];   
-            status = true;
-        }
-    }
+    char* output = nullptr;
 
-    return status;
-}
-
-bool CommandParser::checkForPath(int argc, char* argv[])
-{
-    bool status = false;
-    if(argc >= 3)
-    {
-        if(strcmp(argv[1], "-s") == 0 && boost::regex_match(argv[2], boost::regex(ImgPathRegex), boost::match_partial))
-        {
-            ImgPath = argv[2];   
-            status = true;
-        }
-    }
-
-    return status;
+    if(result == RESULT_OK_PATH)
+        output = const_cast<char*>(filesystem::extension(ImgPath).c_str());
+    else if(result == RESULT_OK_URL)
+        output = const_cast<char*>(filesystem::extension(ImgUrl).c_str());
+    
+    return output;
 }
 
 char* CommandParser::GetUrl(void)
@@ -66,17 +70,6 @@ char* CommandParser::GetUrl(void)
     else
         throw "No valid URL specified";
 }
-char* CommandParser::GetFormat(void)
-{
-    char* output = nullptr;
-
-    if(result == RESULT_OK_PATH)
-        output = const_cast<char*>(boost::filesystem::extension(ImgUrl).c_str());
-    else if(result == RESULT_OK_URL)
-        output = const_cast<char*>(boost::filesystem::extension(ImgPath).c_str());
-    
-    return output;
-}
 
 char* CommandParser::GetImagePath(void)
 {
@@ -84,4 +77,9 @@ char* CommandParser::GetImagePath(void)
         return ImgPath;
     else
         throw "No valid path specified";
+}
+
+ParseResult CommandParser::GetResult(void)
+{
+    return result;
 }

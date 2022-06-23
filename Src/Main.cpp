@@ -11,9 +11,9 @@ int main(int argc, char* argv[])
 {   
    char* imageName = "image";
    CommandParser commandParser;
-   ParseResult result = commandParser.ParseCommands(argc, argv);
+   commandParser.ParseCommands(argc, argv);
 
-   if(result == RESULT_OK_URL)
+   if(commandParser.GetResult() == RESULT_OK_URL)
    {  
       if(!DownloadImage(commandParser.GetUrl(), strcat(imageName,commandParser.GetFormat())))
       {
@@ -27,7 +27,7 @@ int main(int argc, char* argv[])
          return EXIT_FAILURE;
       }   
    }
-   else if(RESULT_OK_PATH)
+   else if(commandParser.GetResult() == RESULT_OK_PATH)
    {
       // TODO
    }

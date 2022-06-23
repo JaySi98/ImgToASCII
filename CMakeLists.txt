@@ -43,7 +43,7 @@ if(ADD_BOOST)
     set(Boost_USE_STATIC_LIBS TRUE)
     #set(Boost_ADDITIONAL_VERSIONS "1.67" "1.67.0")
 
-    find_package(Boost COMPONENTS regex filesystem)
+    find_package(Boost COMPONENTS regex filesystem program_options)
 
     list(APPEND EXTRA_INCLUDES ${Boost_INCLUDE_DIRS})
     list(APPEND EXTRA_LINKS    ${Boost_LIBRARIES})    
