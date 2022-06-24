@@ -12,6 +12,7 @@ enum ParseResult
     RESULT_ERROR    = 0x00,
     RESULT_OK_URL   = 0x01,        
     RESULT_OK_PATH  = 0x02,
+    RESULT_HELP     = 0x04,
 };
 
 class CommandParser
@@ -19,19 +20,19 @@ class CommandParser
 public:
     CommandParser(void);
     void ParseCommands(int argc, char* argv[]);
+    std::string GetUrl(void);
+    std::string GetFormat(void);
+    std::string GetImagePath(void);
     
-    ParseResult GetResult(void);
-    char* GetUrl(void);
-    char* GetFormat(void);
-    char* GetImagePath(void);
+    ParseResult result;
 
 private:
-    ParseResult result;
-    const std::string ImgURLRegex;
-    const std::string ImgPathRegex;
-    char* ImgUrl;
-    char* ImgPath;
-
     void checkURL(std::string line);
     void checkPath(std::string line);
+
+    const std::string ImgURLRegex;
+    const std::string ImgPathRegex;
+    std::string ImgUrl;
+    std::string ImgPath;
+
 };

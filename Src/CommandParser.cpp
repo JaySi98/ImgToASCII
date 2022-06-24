@@ -5,28 +5,35 @@ CommandParser::CommandParser() :
     result(RESULT_ERROR), 
     ImgURLRegex("(https?:\\/\\/.*\\.(?:png|jpg))/i"), 
     ImgPathRegex("/.*\\.(jpg|png)$/igm"),
-    ImgUrl(nullptr),
-    ImgPath(nullptr)
+    ImgUrl(""),
+    ImgPath("")
 { }
 
 void CommandParser::ParseCommands(int argc, char* argv[])
 {
     po::options_description desc("Allowed options");
     desc.add_options()
-        ("-h", "Shows program options")
-        ("-u", po::value<std::string>()->default_value(""), "image url")
-        ("-p", po::value<std::string>()->default_value(""), "image path");
+        ("h", "Shows program options")
+        ("u", po::value<std::string>()->default_value(""), "image url")
+        ("p", po::value<std::string>()->default_value(""), "image path");
     
     po::variables_map vm;
     po::store(po::parse_command_line(argc,argv,desc),vm);
     po::notify(vm);
 
-    if(vm.count("-u"))
+    if(vm.count("h"))
+    {
+        std::cout << desc << std::endl;
+        result = RESULT_HELP;
+        return;
+    }
+
+    if(vm.count("u"))
     {
         std::string option = vm["-u"].as<std::string>(); 
         checkURL(option);
     }
-    else if(vm.count("-p"))
+    else if(vm.count("p"))
     {
         std::string option = vm["-p"].as<std::string>();
         checkPath(option);
@@ -37,7 +44,7 @@ void CommandParser::checkURL(std::string line)
 {
     if(regex_match(line, regex(ImgURLRegex), match_partial))
     {
-        ImgUrl = const_cast<char*>(line.c_str());
+        ImgUrl = line;
         result = RESULT_OK_URL;
     }
 }
@@ -46,24 +53,24 @@ void CommandParser::checkPath(std::string line)
 {
     if(regex_match(line, regex(ImgPathRegex), match_partial))
     {
-        ImgPath = const_cast<char*>(line.c_str());   
+        ImgPath = line;   
         result = RESULT_OK_PATH;
     }
 }
 
-char* CommandParser::GetFormat(void)
+std::string CommandParser::GetFormat(void)
 {
-    char* output = nullptr;
+    std::string output = "";
 
     if(result == RESULT_OK_PATH)
-        output = const_cast<char*>(filesystem::extension(ImgPath).c_str());
+        output = filesystem::extension(ImgPath);
     else if(result == RESULT_OK_URL)
-        output = const_cast<char*>(filesystem::extension(ImgUrl).c_str());
+        output = filesystem::extension(ImgUrl);
     
     return output;
 }
 
-char* CommandParser::GetUrl(void)
+std::string CommandParser::GetUrl(void)
 {
     if(result == RESULT_OK_URL)
         return ImgUrl;
@@ -71,15 +78,10 @@ char* CommandParser::GetUrl(void)
         throw "No valid URL specified";
 }
 
-char* CommandParser::GetImagePath(void)
+std::string CommandParser::GetImagePath(void)
 {
     if(result == RESULT_OK_PATH)
         return ImgPath;
     else
         throw "No valid path specified";
-}
-
-ParseResult CommandParser::GetResult(void)
-{
-    return result;
 }

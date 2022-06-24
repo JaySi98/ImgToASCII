@@ -9,25 +9,24 @@ bool ConvertImage(std::string imagePath);
 
 int main(int argc, char* argv[])
 {   
-   char* imageName = "image";
    CommandParser commandParser;
    commandParser.ParseCommands(argc, argv);
 
-   if(commandParser.GetResult() == RESULT_OK_URL)
+   if(commandParser.result == RESULT_OK_URL)
    {  
-      if(!DownloadImage(commandParser.GetUrl(), strcat(imageName,commandParser.GetFormat())))
-      {
-         std::cout << "Failed to download file: " <<  commandParser.GetUrl() << std::endl;
-         return EXIT_FAILURE;         
-      }
+      // if(!DownloadImage(commandParser.GetUrl(), strcat(imageName,commandParser.GetFormat())))
+      // {
+      //    std::cout << "Failed to download file: " <<  commandParser.GetUrl() << std::endl;
+      //    return EXIT_FAILURE;         
+      // }
 
-      if(!ConvertImage(strcat(imageName,commandParser.GetFormat())))
-      {
-         std::cout << "Failed to convert image: " << std::endl;
-         return EXIT_FAILURE;
-      }   
+      // if(!ConvertImage(strcat(imageName,commandParser.GetFormat())))
+      // {
+      //    std::cout << "Failed to convert image: " << std::endl;
+      //    return EXIT_FAILURE;
+      // }   
    }
-   else if(commandParser.GetResult() == RESULT_OK_PATH)
+   else if(commandParser.result == RESULT_OK_PATH)
    {
       // TODO
    }
