@@ -1,6 +1,5 @@
 #include <CommandParser.h>
 
-
 CommandParser::CommandParser() :
     result(RESULT_ERROR), 
     ImgURLRegex("(https?:\\/\\/.*\\.(?:png|jpg))/i"), 
@@ -14,8 +13,8 @@ void CommandParser::ParseCommands(int argc, char* argv[])
     po::options_description desc("Allowed options");
     desc.add_options()
         ("h", "Shows program options")
-        ("u", po::value<std::string>()->default_value(""), "image url")
-        ("p", po::value<std::string>()->default_value(""), "image path");
+        ("u", po::value<std::string>(), "image url")
+        ("p", po::value<std::string>(), "image path");
     
     po::variables_map vm;
     po::store(po::parse_command_line(argc,argv,desc),vm);
@@ -30,12 +29,12 @@ void CommandParser::ParseCommands(int argc, char* argv[])
 
     if(vm.count("u"))
     {
-        std::string option = vm["-u"].as<std::string>(); 
+        std::string option = vm["u"].as<std::string>(); 
         checkURL(option);
     }
     else if(vm.count("p"))
     {
-        std::string option = vm["-p"].as<std::string>();
+        std::string option = vm["p"].as<std::string>();
         checkPath(option);
     }
 }

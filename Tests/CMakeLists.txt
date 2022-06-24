@@ -12,9 +12,11 @@ get_filename_component(PARENT_DIR ${PROJECT_SOURCE_DIR} DIRECTORY)
 
 set(SOURCES
     ${PARENT_DIR}/Include/Config.h.in
+    ${PARENT_DIR}/Src/CommandParser.cpp
 )
 set(TESTS_SOURCES
     TestMain.cpp
+    TestCommandParser.cpp
 )
 
 # GTest as a testing framework
@@ -31,6 +33,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES ENABLE_EXPORTS ON)
 
 target_link_libraries(UnitTests PUBLIC
     ${GTEST_BOTH_LIBRARIES}
+    ${EXTRA_LINKS}
 )
 
 # doesn't do anything on Linux
