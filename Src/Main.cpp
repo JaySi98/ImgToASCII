@@ -38,12 +38,12 @@ int main(int argc, char* argv[])
    return EXIT_SUCCESS;
 }
 
-bool DownloadImage(char* url, char* path)
+bool DownloadImage(std::string url)
 {
    bool status = false;
    ImageDownloader downloader;
 
-   if(downloader.DownloadImage(url, path))
+   if(downloader.DownloadImage(url))
    {
       status = true;
    }
