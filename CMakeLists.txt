@@ -33,7 +33,8 @@ configure_file(Include/Config.h.in Include/Config.h)
 ############################################################
 option(ADD_BOOST   "Include boost lib in a project"   ON)
 option(ADD_OPENCV  "Include opencv lib in a project"  ON)
-option(ADD_CURL    "Include curl lib in a project"    ON)
+option(ADD_CURL    "Include curl lib in a project"    OFF)
+option(ADD_POCO    "Include poco lib in a project"    ON)
 
 if(ADD_BOOST)
     set(Boost_FIND_REQUIRED TRUE)
@@ -61,6 +62,12 @@ if(ADD_CURL)
     
     list(APPEND EXTRA_INCLUDES ${CURL_INCLUDE_DIR})
     list(APPEND EXTRA_LINKS    ${CURL_LIBRARIES})
+endif()
+
+if(ADD_POCO)
+    find_package(Poco REQUIRED Foundation Net)
+    list(APPEND EXTRA_LINKS    Poco::Foundation Poco::Net)
+
 endif()
 ############################################################
 # Target 
