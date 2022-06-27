@@ -21,7 +21,7 @@ using Poco::Net::FTPStreamFactory;
 class ImageDownloader
 {
 public:
-    bool DownloadImage(std::string url);
+    bool DownloadImage(std::string url, std::string filePath);
 
 private:
 

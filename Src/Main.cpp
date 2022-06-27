@@ -4,7 +4,7 @@
 #include <ImageConverter.h>
 #include <ImageDownloader.h>
 
-bool DownloadImage(char* url, char* path);
+bool DownloadImage(std::string url, std::string path);
 bool ConvertImage(std::string imagePath);
 
 int main(int argc, char* argv[])
@@ -14,21 +14,27 @@ int main(int argc, char* argv[])
 
    if(commandParser.result == RESULT_OK_URL)
    {  
-      // if(!DownloadImage(commandParser.GetUrl(), strcat(imageName,commandParser.GetFormat())))
-      // {
-      //    std::cout << "Failed to download file: " <<  commandParser.GetUrl() << std::endl;
-      //    return EXIT_FAILURE;         
-      // }
+      std::string downloadFileName = "image" + commandParser.GetFormat();
 
-      // if(!ConvertImage(strcat(imageName,commandParser.GetFormat())))
-      // {
-      //    std::cout << "Failed to convert image: " << std::endl;
-      //    return EXIT_FAILURE;
-      // }   
+      if(!DownloadImage(commandParser.GetUrl(), downloadFileName))
+      {
+         std::cout << "Failed to download file: " <<  commandParser.GetUrl() << std::endl;
+         return EXIT_FAILURE;         
+      }
+
+      if(!ConvertImage(downloadFileName))
+      {
+         std::cout << "Failed to convert image: " << std::endl;
+         return EXIT_FAILURE;
+      }   
    }
    else if(commandParser.result == RESULT_OK_PATH)
    {
-      // TODO
+      if(!ConvertImage(commandParser.GetImagePath()))
+      {
+         std::cout << "Failed to convert image: " << std::endl;
+         return EXIT_FAILURE;
+      }   
    }
    else
    {
@@ -38,12 +44,12 @@ int main(int argc, char* argv[])
    return EXIT_SUCCESS;
 }
 
-bool DownloadImage(std::string url)
+bool DownloadImage(std::string url, std::string path)
 {
    bool status = false;
    ImageDownloader downloader;
 
-   if(downloader.DownloadImage(url))
+   if(downloader.DownloadImage(url, path))
    {
       status = true;
    }

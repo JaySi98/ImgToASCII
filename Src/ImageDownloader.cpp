@@ -1,9 +1,7 @@
 #include <ImageDownloader.h>
 
-bool ImageDownloader::DownloadImage(std::string url)
+bool ImageDownloader::DownloadImage(std::string url, std::string filePath)
 {
-   std::string filePath = "image.jpg";
-
    HTTPStreamFactory::registerFactory(); // Must register the HTTP factory to stream using HTTP
    FTPStreamFactory::registerFactory(); // Must register the FTP factory to stream using FTP
 
@@ -18,7 +16,7 @@ bool ImageDownloader::DownloadImage(std::string url)
    std::unique_ptr<std::istream> pStr(URIStreamOpener::defaultOpener().open(uri));
    StreamCopier::copyStream(*pStr.get(), fileStream);
 
-  fileStream.close();
+   fileStream.close();
 
    return true;
 }
