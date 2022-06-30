@@ -65,8 +65,8 @@ if(ADD_CURL)
 endif()
 
 if(ADD_POCO)
-    find_package(Poco REQUIRED Foundation Net)
-    list(APPEND EXTRA_LINKS    Poco::Foundation Poco::Net)
+    find_package(Poco REQUIRED Foundation Util Net Crypto NetSSL )
+    list(APPEND EXTRA_LINKS    Poco::Foundation Poco::Util Poco::Net Poco::Crypto Poco::NetSSL)
 
 endif()
 ############################################################

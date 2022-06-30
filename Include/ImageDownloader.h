@@ -3,20 +3,15 @@
 #include <fstream>
 
 #include <Poco/URIStreamOpener.h>
-#include <Poco/StreamCopier.h>
 #include <Poco/Path.h>
 #include <Poco/URI.h>
 #include <Poco/Exception.h>
-#include <Poco/Net/HTTPStreamFactory.h>
-#include <Poco/Net/FTPStreamFactory.h>
-
-using Poco::URIStreamOpener;
-using Poco::StreamCopier;
-using Poco::Path;
-using Poco::URI;
-using Poco::Exception;
-using Poco::Net::HTTPStreamFactory;
-using Poco::Net::FTPStreamFactory;
+#include <Poco/MD5Engine.h>
+#include <Poco/DigestStream.h>
+#include <Poco/Net/Context.h>
+#include <Poco/Net/HTTPSClientSession.h>
+#include <Poco/Net/HTTPResponse.h>
+#include <Poco/Net/HTTPRequest.h>
 
 class ImageDownloader
 {

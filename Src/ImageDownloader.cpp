@@ -2,21 +2,37 @@
 
 bool ImageDownloader::DownloadImage(std::string url, std::string filePath)
 {
-   HTTPStreamFactory::registerFactory(); // Must register the HTTP factory to stream using HTTP
-   FTPStreamFactory::registerFactory(); // Must register the FTP factory to stream using FTP
+   bool result = true;
+   
+   try
+   {
+      Poco::URI uri(url);
+      std::string path(uri.getPathAndQuery());
 
-   // Create and open a file stream
-   std::ofstream fileStream;
-   fileStream.open(filePath, std::ios::out | std::ios::trunc | std::ios::binary);
+      const Poco::Net::Context::Ptr context = new Poco::Net::Context(
+         Poco::Net::Context::CLIENT_USE, "", "", "",
+         Poco::Net::Context::VERIFY_NONE, 9, false,
+         "ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH");
 
-   // Create the URI from the URL to the file.
-   URI uri(url);
+      Poco::Net::HTTPSClientSession session(uri.getHost(), uri.getPort(), context);
+      Poco::Net::HTTPRequest request(Poco::Net::HTTPRequest::HTTP_GET, path, Poco::Net::HTTPMessage::HTTP_1_1);
+      Poco::Net::HTTPResponse response;
 
-   // Open the stream and copy the data to the file. 
-   std::unique_ptr<std::istream> pStr(URIStreamOpener::defaultOpener().open(uri));
-   StreamCopier::copyStream(*pStr.get(), fileStream);
-
-   fileStream.close();
-
-   return true;
+      session.sendRequest(request);
+      std::istream &rs = session.receiveResponse(response);
+      std::cout << response.getStatus() << " " << response.getReason() << std::endl;
+      
+      if (response.getStatus() != Poco::Net::HTTPResponse::HTTP_UNAUTHORIZED) 
+      {
+         std::ofstream ofs(filePath, std::fstream::binary);
+         Poco::StreamCopier::copyStream(rs, ofs);
+      }
+   }
+   catch(const std::exception& e)
+   {
+      std::cerr << e.what() << '\n';
+      result = false;
+   }
+   
+   return result;
 }
