@@ -31,12 +31,28 @@ void CommandParser::ParseCommands(int argc, char* argv[])
     {
         std::string option = vm["u"].as<std::string>(); 
         checkURL(option);
+        parseSettings(argc,argv);
     }
     else if(vm.count("p"))
     {
         std::string option = vm["p"].as<std::string>();
         checkPath(option);
+        parseSettings(argc,argv);
     }
+}
+
+void CommandParser::parseSettings(int argc, char* argv[])
+{
+    po::options_description desc("Comversion settings");
+    desc.add_options()
+        ("u", po::value<std::string>(), "image url")
+        ("p", po::value<std::string>(), "image path");
+    
+    po::variables_map vm;
+    po::store(po::parse_command_line(argc,argv,desc),vm);
+    po::notify(vm);
+
+    // TODO
 }
 
 void CommandParser::checkURL(std::string line)

@@ -1,3 +1,5 @@
+#pragma once
+
 #include <string>
 #include <iostream>
 #include <boost/regex.hpp>
@@ -15,6 +17,11 @@ enum ParseResult
     RESULT_HELP     = 0x04,
 };
 
+typedef struct
+{
+
+}ConversionSettings;
+
 class CommandParser
 {
 public:
@@ -25,10 +32,12 @@ public:
     std::string GetImagePath(void);
     
     ParseResult result;
+    ConversionSettings settings;
 
 private:
     void checkURL(std::string line);
     void checkPath(std::string line);
+    void parseSettings(int argc, char* argv[]);
 
     const std::string ImgURLRegex;
     const std::string ImgPathRegex;

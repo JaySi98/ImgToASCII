@@ -1,7 +1,8 @@
+
 #include <ImageConverter.h>
 
-ImageConverter::ImageConverter(std::string imagePath) 
-: imagePath(imagePath)
+ImageConverter::ImageConverter(std::string imagePath, ConversionSettings settings) 
+: imagePath(imagePath), settings(settings)
 { }
 
 bool ImageConverter::ConvertToText(void)
