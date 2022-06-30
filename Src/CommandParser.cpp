@@ -3,7 +3,7 @@
 CommandParser::CommandParser() :
     result(RESULT_ERROR), 
     ImgURLRegex("(https?:\\/\\/.*\\.(?:png|jpg))/i"), 
-    ImgPathRegex("/.*\\.(jpg|png)$/igm"),
+    ImgPathRegex(".*\\.(jpg|png)$/igm"),
     ImgUrl(""),
     ImgPath("")
 { }
