@@ -10,11 +10,14 @@
 class ImageConverter
 {
 public:
-    ImageConverter(std::string imagePath, ConversionSettings settings);
+    ImageConverter(std::string imagePath, ConversionParams params);
     bool ConvertToText(void);
-
+    
 private:
+    bool ConvertSimple(void);
+    bool ConvertWithDimensions(void);
+
     std::string imagePath;
-    ConversionSettings settings;
-    const std::string characters = "@%W&Q0m$B#RbUOXG496PKdq|Y]{CoxZv/\\TL*rs!<+\";,:_. ";
+    ConversionParams params;
+    const std::string outputFile = "output.txt";
 };

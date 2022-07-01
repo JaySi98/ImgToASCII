@@ -5,7 +5,7 @@
 #include <ImageDownloader.h>
 
 bool DownloadImage(std::string url, std::string path);
-bool ConvertImage(std::string imagePath, ConversionSettings settings);
+bool ConvertImage(std::string imagePath, ConversionParams params);
 
 int main(int argc, char* argv[])
 {   
@@ -22,7 +22,7 @@ int main(int argc, char* argv[])
          return EXIT_FAILURE;         
       }
 
-      if(!ConvertImage(downloadFileName, commandParser.settings))
+      if(!ConvertImage(downloadFileName, commandParser.params))
       {
          std::cout << "Failed to convert image: " << std::endl;
          return EXIT_FAILURE;
@@ -30,7 +30,7 @@ int main(int argc, char* argv[])
    }
    else if(commandParser.result == RESULT_OK_PATH)
    {
-      if(!ConvertImage(commandParser.GetImagePath(), commandParser.settings))
+      if(!ConvertImage(commandParser.GetImagePath(), commandParser.params))
       {
          std::cout << "Failed to convert image: " << std::endl;
          return EXIT_FAILURE;
@@ -57,10 +57,10 @@ bool DownloadImage(std::string url, std::string path)
    return status;
 }
 
-bool ConvertImage(std::string imagePath, ConversionSettings settings)
+bool ConvertImage(std::string imagePath, ConversionParams params)
 {
    bool status = false;
-   ImageConverter converter(imagePath, settings);      
+   ImageConverter converter(imagePath, params);      
    
    try
    {

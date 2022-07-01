@@ -6,7 +6,12 @@ CommandParser::CommandParser() :
     ImgPathRegex(".*\\.(jpg|png)$/igm"),
     ImgUrl(""),
     ImgPath("")
-{ }
+{ 
+    params.characters = "@%W&Q0m$B#RbUOXG496PKdq|Y]{CoxZv/\\TL*rs!<+\";,:_. ";
+    params.charWidth  = 11;
+    params.charHeight = 17;
+    params.keepDimensions  = true;
+}
 
 void CommandParser::ParseCommands(int argc, char* argv[])
 {
@@ -45,14 +50,31 @@ void CommandParser::parseSettings(int argc, char* argv[])
 {
     po::options_description desc("Comversion settings");
     desc.add_options()
-        ("u", po::value<std::string>(), "image url")
-        ("p", po::value<std::string>(), "image path");
+        ("cw",          po::value<int>(),           "charcters width")
+        ("ch",          po::value<int>(),           "charcters height")
+        ("characters",  po::value<std::string>(),   "characters to use")
+        ("dimensions",  po::value<bool>(),          "to keep image dimensions");
     
     po::variables_map vm;
     po::store(po::parse_command_line(argc,argv,desc),vm);
     po::notify(vm);
 
-    // TODO
+    if(vm.count("cw"))
+    {
+        params.charWidth = vm["cw"].as<int>(); 
+    }
+    if(vm.count("ch"))
+    {
+        params.charHeight = vm["ch"].as<int>(); 
+    }
+    if(vm.count("dimensions"))
+    {
+        params.keepDimensions = vm["dimensions"].as<bool>(); 
+    }
+    if(vm.count("characters"))
+    {
+        params.characters = vm["characters"].as<std::string>();
+    }
 }
 
 void CommandParser::checkURL(std::string line)

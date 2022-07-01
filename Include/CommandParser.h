@@ -19,8 +19,11 @@ enum ParseResult
 
 typedef struct
 {
-
-}ConversionSettings;
+    std::string characters;
+    int charWidth;
+    int charHeight;
+    bool keepDimensions;
+}ConversionParams;
 
 class CommandParser
 {
@@ -32,7 +35,7 @@ public:
     std::string GetImagePath(void);
     
     ParseResult result;
-    ConversionSettings settings;
+    ConversionParams params;
 
 private:
     void checkURL(std::string line);
