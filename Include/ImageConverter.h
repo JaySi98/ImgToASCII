@@ -14,10 +14,11 @@ public:
     void ConvertToText(void);
     
 private:
-    void ConvertSimple(cv::Mat image, std::ofstream& file);
-    void ConvertWithDimensions(cv::Mat image, std::ofstream& file);
-    void ConvertWithCharSize(cv::Mat image, std::ofstream& file);
-
+    void ConvertSimple(cv::Mat& image, std::ofstream& file);
+    void ConvertWithDimensions(cv::Mat& image, std::ofstream& file);
+    void ConvertWithCharSize(cv::Mat& image, std::ofstream& file);
+    int GetAvgBrightness(cv::Mat& image, int row, int col);
+    
     std::string imagePath;
     ConversionParams params;
     const std::string outputFile = "output.txt";

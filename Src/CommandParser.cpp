@@ -7,7 +7,7 @@ CommandParser::CommandParser() :
     ImgUrl(""),
     ImgPath("")
 { 
-    params.characters = "@%W&Q0m$B#RbUOXG496PKdq|Y]{CoxZv/\\TL*rs!<+\";,:_. ";
+    params.characters = "%W&Q0m$BHD8#RbUAOpgXGhVw49k6PKdq|yY[]}{jECnSo)(uxZl12vat5IeFJ3/7\\TLi?*frs!cz><+\";^=,:'_-`. ";
     params.charWidth  = 11;
     params.charHeight = 17;
     params.settings   = 0;
