@@ -17,12 +17,18 @@ enum ParseResult
     RESULT_HELP     = 0x04,
 };
 
+enum ConversionSettings
+{
+    SETT_DIMENSION = 0x01,
+    SETT_SIZE      = 0x02,
+};
+
 typedef struct
 {
     std::string characters;
     int charWidth;
     int charHeight;
-    bool keepDimensions;
+    int settings;
 }ConversionParams;
 
 class CommandParser

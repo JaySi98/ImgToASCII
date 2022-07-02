@@ -22,19 +22,11 @@ int main(int argc, char* argv[])
          return EXIT_FAILURE;         
       }
 
-      if(!ConvertImage(downloadFileName, commandParser.params))
-      {
-         std::cout << "Failed to convert image: " << std::endl;
-         return EXIT_FAILURE;
-      }   
+      ConvertImage(downloadFileName, commandParser.params);     
    }
    else if(commandParser.result == RESULT_OK_PATH)
    {
-      if(!ConvertImage(commandParser.GetImagePath(), commandParser.params))
-      {
-         std::cout << "Failed to convert image: " << std::endl;
-         return EXIT_FAILURE;
-      }   
+      ConvertImage(commandParser.GetImagePath(), commandParser.params); 
    }
    else
    {

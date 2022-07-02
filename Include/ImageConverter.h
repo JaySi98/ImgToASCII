@@ -11,11 +11,12 @@ class ImageConverter
 {
 public:
     ImageConverter(std::string imagePath, ConversionParams params);
-    bool ConvertToText(void);
+    void ConvertToText(void);
     
 private:
-    bool ConvertSimple(void);
-    bool ConvertWithDimensions(void);
+    void ConvertSimple(cv::Mat image, std::ofstream& file);
+    void ConvertWithDimensions(cv::Mat image, std::ofstream& file);
+    void ConvertWithCharSize(cv::Mat image, std::ofstream& file);
 
     std::string imagePath;
     ConversionParams params;

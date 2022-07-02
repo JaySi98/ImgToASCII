@@ -10,7 +10,7 @@ CommandParser::CommandParser() :
     params.characters = "@%W&Q0m$B#RbUOXG496PKdq|Y]{CoxZv/\\TL*rs!<+\";,:_. ";
     params.charWidth  = 11;
     params.charHeight = 17;
-    params.keepDimensions  = true;
+    params.settings   = 0;
 }
 
 void CommandParser::ParseCommands(int argc, char* argv[])
@@ -62,14 +62,16 @@ void CommandParser::parseSettings(int argc, char* argv[])
     if(vm.count("cw"))
     {
         params.charWidth = vm["cw"].as<int>(); 
+        params.settings |= SETT_SIZE;
     }
     if(vm.count("ch"))
     {
-        params.charHeight = vm["ch"].as<int>(); 
+        params.charHeight = vm["ch"].as<int>();
+        params.settings |= SETT_SIZE; 
     }
     if(vm.count("dimensions"))
     {
-        params.keepDimensions = vm["dimensions"].as<bool>(); 
+        params.settings |= SETT_DIMENSION; 
     }
     if(vm.count("characters"))
     {

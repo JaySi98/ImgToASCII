@@ -4,51 +4,83 @@ ImageConverter::ImageConverter(std::string imagePath, ConversionParams params)
 : imagePath(imagePath), params(params)
 { }
 
-bool ImageConverter::ConvertToText(void)
-{
-    if(params.keepDimensions)
-    {
-        return ConvertWithDimensions();
-    }
-    else
-    {
-        return ConvertSimple();
-    }
-}
-
-bool ImageConverter::ConvertSimple(void)
+void ImageConverter::ConvertToText(void)
 {
     cv::Mat image = cv::imread(imagePath, cv::IMREAD_GRAYSCALE);
+    std::ofstream file;
     
     if(!image.empty())
     {
-        std::ofstream file;
         file.open(outputFile);
 
-        int channels = image.channels();
-        int rows = image.rows;
-        int cols = image.cols * channels;
+        if(params.settings & SETT_DIMENSION)
+            ConvertWithDimensions(image, file);
+
+        else if(params.settings & SETT_SIZE)
+            ConvertWithCharSize(image, file);
         
-        uint8_t pixelValue;
-        for(int i = 0; i < rows; ++i)
-        {
-            for(int j = 0; j < cols; ++j)
-            {
-                pixelValue = image.at<uint8_t>(i,j);
-                int temp = std::round((pixelValue * (params.characters.length() - 1)) / 255);
-                file << params.characters[temp];
-            }
-            file << std::endl;
-        }
+        else
+            ConvertSimple(image, file);
 
         file.close();
-        return true;
     }
     else 
-        throw "Couldn't open image";
+        throw "Couldn't convert image";
 }
 
-bool ImageConverter::ConvertWithDimensions(void)
+void ImageConverter::ConvertSimple(cv::Mat image, std::ofstream& file)
 {
+    int channels = image.channels();
+    int rows = image.rows;
+    int cols = image.cols * channels;
+    
+    uint8_t pixelValue;
+    for(int i = 0; i < rows; ++i)
+    {
+        for(int j = 0; j < cols; ++j)
+        {
+            pixelValue = image.at<uint8_t>(i,j);
+            int temp = std::round((pixelValue * (params.characters.length() - 1)) / 255);
+            file << params.characters[temp];
+        }
+        file << std::endl;
+    }
+}
 
+void ImageConverter::ConvertWithDimensions(cv::Mat image, std::ofstream& file)
+{
+    int channels = image.channels();
+    int rows = image.rows;
+    int cols = image.cols * channels;
+    
+    uint8_t pixelValue;
+    for(int i = 0; i < rows; ++i)
+    {
+        for(int j = 0; j < cols; ++j)
+        {
+            pixelValue = image.at<uint8_t>(i,j);
+            int temp = std::round((pixelValue * (params.characters.length() - 1)) / 255);
+            file << params.characters[temp];
+        }
+        file << std::endl;
+    }
+}
+
+void ImageConverter::ConvertWithCharSize(cv::Mat image, std::ofstream& file)
+{
+    int channels = image.channels();
+    int rows = image.rows;
+    int cols = image.cols * channels;
+    
+    uint8_t pixelValue;
+    for(int i = 0; i < rows; ++i)
+    {
+        for(int j = 0; j < cols; ++j)
+        {
+            pixelValue = image.at<uint8_t>(i,j);
+            int temp = std::round((pixelValue * (params.characters.length() - 1)) / 255);
+            file << params.characters[temp];
+        }
+        file << std::endl;
+    }
 }
