@@ -19,8 +19,7 @@ enum ParseResult
 
 enum ConversionSettings
 {
-    SETT_DIMENSION = 0x01,
-    SETT_SIZE      = 0x02,
+    SETT_KEEP_DIMENSION = 0x01,
 };
 
 typedef struct
@@ -46,7 +45,7 @@ public:
 private:
     void checkURL(std::string line);
     void checkPath(std::string line);
-    void parseSettings(int argc, char* argv[]);
+    void parseSettings(int argc, char* argv[], po::variables_map& vm);
 
     const std::string ImgURLRegex;
     const std::string ImgPathRegex;

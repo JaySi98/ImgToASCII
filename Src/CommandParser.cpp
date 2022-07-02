@@ -8,8 +8,8 @@ CommandParser::CommandParser() :
     ImgPath("")
 { 
     params.characters = "%W&Q0m$BHD8#RbUAOpgXGhVw49k6PKdq|yY[]}{jECnSo)(uxZl12vat5IeFJ3/7\\TLi?*frs!cz><+\";^=,:'_-`. ";
-    params.charWidth  = 11;
-    params.charHeight = 17;
+    params.charWidth  = 2;
+    params.charHeight = 4;
     params.settings   = 0;
 }
 
@@ -19,7 +19,11 @@ void CommandParser::ParseCommands(int argc, char* argv[])
     desc.add_options()
         ("h", "Shows program options")
         ("u", po::value<std::string>(), "image url")
-        ("p", po::value<std::string>(), "image path");
+        ("p", po::value<std::string>(), "image path")
+        ("cw",          po::value<int>(),           "charcters width")
+        ("ch",          po::value<int>(),           "charcters height")
+        ("characters",  po::value<std::string>(),   "characters to use")
+        ("dimensions",  po::value<bool>(),          "to keep image dimensions");
     
     po::variables_map vm;
     po::store(po::parse_command_line(argc,argv,desc),vm);
@@ -36,42 +40,29 @@ void CommandParser::ParseCommands(int argc, char* argv[])
     {
         std::string option = vm["u"].as<std::string>(); 
         checkURL(option);
-        parseSettings(argc,argv);
+        parseSettings(argc,argv, vm);
     }
     else if(vm.count("p"))
     {
         std::string option = vm["p"].as<std::string>();
         checkPath(option);
-        parseSettings(argc,argv);
+        parseSettings(argc,argv, vm);
     }
 }
 
-void CommandParser::parseSettings(int argc, char* argv[])
+void CommandParser::parseSettings(int argc, char* argv[], po::variables_map& vm)
 {
-    po::options_description desc("Comversion settings");
-    desc.add_options()
-        ("cw",          po::value<int>(),           "charcters width")
-        ("ch",          po::value<int>(),           "charcters height")
-        ("characters",  po::value<std::string>(),   "characters to use")
-        ("dimensions",  po::value<bool>(),          "to keep image dimensions");
-    
-    po::variables_map vm;
-    po::store(po::parse_command_line(argc,argv,desc),vm);
-    po::notify(vm);
-
     if(vm.count("cw"))
     {
         params.charWidth = vm["cw"].as<int>(); 
-        params.settings |= SETT_SIZE;
     }
     if(vm.count("ch"))
     {
         params.charHeight = vm["ch"].as<int>();
-        params.settings |= SETT_SIZE; 
     }
     if(vm.count("dimensions"))
     {
-        params.settings |= SETT_DIMENSION; 
+        params.settings |= SETT_KEEP_DIMENSION; 
     }
     if(vm.count("characters"))
     {
